@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NYCFastTrack</string>
+    <string name="title_activity_route_simulation">Map</string>
+    <string name="title_activity_live_feed">Map</string>
+</resources>

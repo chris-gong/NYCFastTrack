@@ -1,0 +1,36 @@
+<LinearLayout
+    android:layout_width = "match_parent"
+    android:layout_height = "match_parent"
+    xmlns:android = "http://schemas.android.com/apk/res/android"
+    android:orientation = "vertical">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="258dp"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems = "10"
+            android:hint = "Enter a stop to find a train to monitor"
+            android:id = "@+id/input"
+            android:textSize ="24dp"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text = "Enter stop"
+            android:id = "@+id/enterButton"
+            android:layout_gravity = "right"/>
+    </LinearLayout>
+
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:map="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/map"
+    android:name="com.google.android.gms.maps.SupportMapFragment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.chrisgong.nycfasttrack.LiveFeedActivity" />
+</LinearLayout>
