@@ -72,6 +72,7 @@ public class LiveRoutesActivity extends AppCompatActivity {
                         routeDisplay.setLayoutParams(new ViewGroup.LayoutParams(GridLayout.LayoutParams.MATCH_PARENT, GridLayout.LayoutParams.WRAP_CONTENT));
                         innerRelativeLayout.addView(routeDisplay);
                         Log.d("key", key);
+
                     }
                 }
 

@@ -28,6 +28,7 @@ import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
@@ -153,18 +154,23 @@ public class RouteSimulationActivity extends FragmentActivity implements OnMapRe
                         enterButton.setEnabled(false);
                         if(!(NYCGraph.routeLinkedLists.size() > 0)){
                             NYCGraph.makeNYCGraph();
+                            Log.d("yes","yes");
                         }
                         routeLinkedLists = NYCGraph.routeLinkedLists;
                         NYCGraph.Vertex curr = routeLinkedLists.get(selectedRoute).head;
                         NYCGraph.Vertex prev = null;
+                        Log.d("selectedRoute", selectedRoute);
                         PolylineOptions polyline = new PolylineOptions().color(Color.BLUE).width(5).visible(true).zIndex(30);
                         while(curr != null){
+                            Log.d("hi", "test");
                             LatLng vertexLatLng = new LatLng(curr.latitude, curr.longitude);
                             mMap.addMarker(new MarkerOptions().position(vertexLatLng).title(address.getAddressLine(0)));
-                            polyline.add(vertexLatLng);
+                            polyline = polyline.add(vertexLatLng);
+                            prev = curr;
+                            curr = curr.next;
 
                         }
-                        mMap.addPolyline(polyline);
+                        Polyline line = mMap.addPolyline(polyline);
                         //zoom back after 5 seconds
                         Handler handler = new Handler();
                         handler.postDelayed(new Runnable() {

@@ -1,9 +1,11 @@
 package com.chrisgong.nycfasttrack;
 
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,10 +17,14 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.chrisgong.nycfasttrack.NYCGraph.routeLinkedLists;
 
 public class LiveFeedActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -61,7 +67,7 @@ public class LiveFeedActivity extends FragmentActivity implements OnMapReadyCall
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
-                    if(!(NYCGraph.routeLinkedLists.size() > 0)){
+                    if(!(routeLinkedLists.size() > 0)){
                         NYCGraph.makeNYCGraph();
                     }
                     Address address = addressList.get(0);
@@ -76,7 +82,46 @@ public class LiveFeedActivity extends FragmentActivity implements OnMapReadyCall
                     mMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 10));
                     //mMap.animateCamera(CameraUpdateFactory.zoomIn());
                     mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+                    routeLinkedLists = routeLinkedLists;
+                    NYCGraph.Vertex curr = routeLinkedLists.get(route).head;
+                    NYCGraph.Vertex prev = null;
+                    Log.d("selectedRoute", route);
+                    PolylineOptions polyline = new PolylineOptions().color(Color.BLUE).width(5).visible(true).zIndex(30);
+                    while(curr != null){
+                        Log.d("hi", "test");
+                        LatLng vertexLatLng = new LatLng(curr.latitude, curr.longitude);
+                        mMap.addMarker(new MarkerOptions().position(vertexLatLng).title(address.getAddressLine(0)));
+                        polyline = polyline.add(vertexLatLng);
+                        prev = curr;
+                        curr = curr.next;
 
+                    }
+                    Polyline line = mMap.addPolyline(polyline);
+                    /*Handler handler = new Handler();
+                    handler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            long elapsed = SystemClock.uptimeMillis() - start;
+                            float t = interpolator.getInterpolation((float) elapsed
+                                    / duration);
+                            double lng = t * toPosition.longitude + (1 - t)
+                                    * startLatLng.longitude;
+                            double lat = t * toPosition.latitude + (1 - t)
+                                    * startLatLng.latitude;
+                            marker.setPosition(new LatLng(lat, lng));
+
+                            if (t < 1.0) {
+                                // Post again 16ms later.
+                                handler.postDelayed(this, 16);
+                            } else {
+                                if (hideMarker) {
+                                    marker.setVisible(false);
+                                } else {
+                                    marker.setVisible(true);
+                                }
+                            }
+                        }
+                    });*/
                 }
             }
         });
